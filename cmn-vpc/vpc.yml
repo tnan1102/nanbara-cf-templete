@@ -1,0 +1,34 @@
+# スタック名：cmn-vpc
+# 説明：共通環境VPCテンプレート mainテンプレート
+# URL:https://s3.ap-northeast-1.amazonaws.com/nanbara-cf-templete/cmn-vpc/vpc.yml
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 共通VPC作成テンプレート
+Parameters:
+  VPCCidrBlock:
+    Type: String
+  TagCreatebyKey:
+    Type: String
+  TagCreatebyValue: 
+    Type: String
+Resources:
+  VPC: 
+    Type: "AWS::EC2::VPC"
+    Properties: 
+      CidrBlock: !Ref VPCCidrBlock
+      EnableDnsSupport: "true"
+      EnableDnsHostnames: "true"
+      InstanceTenancy: default
+      Tags: 
+        - Key: !Ref TagCreatebyKey
+          Value: !Ref TagCreatebyValue
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags: 
+        - Key: !Ref TagCreatebyKey
+          Value: !Ref TagCreatebyValue
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties: 
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC

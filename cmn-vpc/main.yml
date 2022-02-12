@@ -1,0 +1,31 @@
+# スタック名：cmn-vpc
+# 説明：共通環境VPCテンプレート mainテンプレート
+# URL:https://s3.ap-northeast-1.amazonaws.com/nanbara-cf-templete/cmn-vpc/main.yml
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 共通VPCテンプレート
+Parameters:
+  VPCCidrBlock:
+    Type: String
+    Default: "10.0.0.0/16"
+    Description: "specify the IP address range of the VPC"
+Mappings: 
+  Tag: 
+    CreateBy: 
+      key: "create-by"
+      value: "CloudFormation"
+  Child:
+    VPCStack:  
+      S3Url: "https://s3.ap-northeast-1.amazonaws.com/nanbara-cf-templete/cmn-vpc/"
+      templete: "vpc.yml"
+Resources:
+  VPCStack: 
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub
+        - ${S3Url}${templete}
+        - S3Url: !FindInMap [Child, VPCStack, S3Url]
+          templete: !FindInMap [Child, VPCStack, templete]
+      Parameters:
+        VPCCidrBlock: !Ref VPCCidrBlock
+        TagCreatebyKey: !FindInMap [Tag, CreateBy, key]
+        TagCreatebyValue: !FindInMap [Tag, CreateBy, value]
