@@ -1,27 +1,30 @@
 # 設計
 ## S3設計
 * 「nanbara-cf-templete」というバケットにテンプレートをアップロードする。
-* システム単位でS3バケットにディレクトリを作成し、テンプレートをアップロードする。
-* nanbara-cf-templeteのフォルダ構成は以下の通り
+* 共通のリソースはcmnディレクトリにテンプレートを置く。
+* システム単位でS3バケットにディレクトリを作成し、テンプレートを置く。
+* nanbara-cf-templeteのフォルダ構成は以下の通り。
 ```
 nanbara-cf-templete
-├── cmn-vpc      # 共通のVPCテンプレート
-├── cmn-sg       # 共通のセキュリティグループテンプレート
-├── cmn-bastion  # 共通の踏み台インスタンスのテンプレート
-├── system-A     # 以下、システム毎のテンプレート
+├── cmn       # 共通環境テンプレート
+├── system-A  # 以下、システム毎のテンプレート
 ├── system-B
 └── system-C
 ```
 
 ## CFn tenplete設計
-* VPCとSGは共通のものを利用する、その他は基本的にシステム毎に構築する。
-* テンプレートはネスト構造にする。具体的には以下の通り
+* VPC,Subnet,SG,iamは共通環境テンプレートで管理する。
+* テンプレートはネスト構造にする。
 ```
-main.yml          # mainテンプレート
-├── subnet.yml    # サブネットテンプレート
-├── instance.yml  # インスタンステンプレート
-├── iam.yml       # iamユーザテンプレート
-└── s3.yml        # S3テンプレート
+nanbara-cf-templete
+└── cmn  # 共通環境テンプレート
+    ├── main.yml        # mainテンプレート
+    ├── cmn-vpc.yml     # VPC
+    ├── cmn-public-subnet.yml   # パブリックサブネット
+    ├── cmn-private-subnet.yml  # プライベートサブネット
+    ├── cmn-sg.yml      # セキュリティグループ
+    ├── cmn-iam.yml     # IAM
+    └── cmn-bastion.yml # 踏み台サーバ
 ```
 
 # 使い方
@@ -44,4 +47,3 @@ aws cloudformation validate-template --template-url https://s3.ap-northeast-1.am
 echo https://s3.ap-northeast-1.amazonaws.com/${bucket}${templete}
 ```
 4. マネジメントコンソールからスタック作成
-* スタック名はディレクトリ名とする

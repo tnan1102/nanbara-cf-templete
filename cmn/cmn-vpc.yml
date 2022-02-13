@@ -1,6 +1,6 @@
-# スタック名：cmn-vpc
-# 説明：共通環境VPCテンプレート mainテンプレート
-# URL:https://s3.ap-northeast-1.amazonaws.com/nanbara-cf-templete/cmn-vpc/vpc.yml
+# スタック名：CmnVPCStack
+# 説明：共通環境 VPCテンプレート
+# URL:https://s3.ap-northeast-1.amazonaws.com/nanbara-cf-templete/cmn/cmn-vpc.yml
 AWSTemplateFormatVersion: "2010-09-09"
 Description: 共通VPC作成テンプレート
 Parameters:
@@ -11,7 +11,7 @@ Parameters:
   TagCreatebyValue: 
     Type: String
 Resources:
-  VPC: 
+  CmnVPC: 
     Type: "AWS::EC2::VPC"
     Properties: 
       CidrBlock: !Ref VPCCidrBlock
@@ -19,16 +19,30 @@ Resources:
       EnableDnsHostnames: "true"
       InstanceTenancy: default
       Tags: 
+        - Key: "Name"
+          Value: "cmn-vpc"
         - Key: !Ref TagCreatebyKey
           Value: !Ref TagCreatebyValue
-  InternetGateway:
+  CmnInternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags: 
+        - Key: "Name"
+          Value: "cmn-igw"
         - Key: !Ref TagCreatebyKey
           Value: !Ref TagCreatebyValue
   InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties: 
-      InternetGatewayId: !Ref InternetGateway
-      VpcId: !Ref VPC
+      InternetGatewayId: !Ref CmnInternetGateway
+      VpcId: !Ref CmnVPC
+Outputs:
+  CmnVPCId:
+    Value: !Ref CmnVPC
+    Description: "cmn-vpc VPC id"
+  CmnVPCCidrBlock:
+    Value: !GetAtt CmnVPC.CidrBlock
+    Description: "cmn-vpc VPC cidr block"
+  CmnIgwId:
+    Value: !Ref CmnInternetGateway
+    Description: "cmn-igw IGW id"
