@@ -6,7 +6,9 @@ Description: 共通パブリックサブネット作成テンプレート
 Parameters:
   VPCId:
     Type: String
-  IgwId:
+  #IgwId:
+  #  Type: String
+  SubnetCidrBlock:
     Type: String
   TagCreatebyKey:
     Type: String
@@ -17,7 +19,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties: 
       AvailabilityZone: "ap-northeast-1a"
-      CidrBlock: "10.0.0.0/24"
+      CidrBlock: !Ref SubnetCidrBlock
       VpcId: !Ref VPCId
       Tags: 
         - Key: "Name"

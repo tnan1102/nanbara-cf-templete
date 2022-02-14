@@ -12,10 +12,9 @@ Mappings:
     CmnVPCStack:  
       TempleteUrl: "https://s3.ap-northeast-1.amazonaws.com/nanbara-cf-templete/cmn/cmn-vpc.yml"
       CidrBlock: "10.0.0.0/16"
-    CmnPubSNStack: 
+    CmnPubSnStack: 
       TempleteUrl: "https://s3.ap-northeast-1.amazonaws.com/nanbara-cf-templete/cmn/cmn-pub-sn.yml"
       CidrBlock: "10.0.0.0/24"
-      AvailabilityZone: "ap-northeast-1a"
     CmnLinuxSGStack: 
       TempleteUrl: "https://s3.ap-northeast-1.amazonaws.com/nanbara-cf-templete/cmn/cmn-linux-sg.yml"
     BastionLinuxSGStack:  
@@ -29,15 +28,14 @@ Resources:
         VPCCidrBlock: !FindInMap [ChildStackVar, CmnVPCStack, CidrBlock]
         TagCreatebyKey: !FindInMap [DefaultTag, CreateBy, key]
         TagCreatebyValue: !FindInMap [DefaultTag, CreateBy, value]
-  CmnPubSNStack:
+  CmnPubSnStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !FindInMap [ChildStackVar, CmnPubSNStack, TempleteUrl]
+      TemplateURL: !FindInMap [ChildStackVar, CmnPubSnStack, TempleteUrl]
       Parameters: 
         VPCId: !GetAtt CmnVPCStack.Outputs.CmnVPCId
         IgwId: !GetAtt CmnVPCStack.Outputs.CmnIgwId
-        SubnetCidrBlock: [ChildStackVar, CmnPubSNStack, CidrBlock]
-        AvailabilityZone: [ChildStackVar, CmnPubSNStack, AvailabilityZone]
+        SubnetCidrBlock: !FindInMap [ChildStackVar, CmnPubSnStack, CidrBlock]
         TagCreatebyKey: !FindInMap [DefaultTag, CreateBy, key]
         TagCreatebyValue: !FindInMap [DefaultTag, CreateBy, value]
   CmnLinuxSGStack: 
