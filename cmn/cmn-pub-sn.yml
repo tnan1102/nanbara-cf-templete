@@ -1,0 +1,41 @@
+# スタック名：cmn-stack
+# 説明：共通環境 パブリックサブネットテンプレート
+# URL:https://s3.ap-northeast-1.amazonaws.com/nanbara-cf-templete/cmn/cmn-pub-sn.yml
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 共通パブリックサブネット作成テンプレート
+Parameters:
+  VPCId:
+    Type: String
+  IgwId:
+    Type: String
+  TagCreatebyKey:
+    Type: String
+  TagCreatebyValue: 
+    Type: String
+Resources:
+  CmnPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties: 
+      AvailabilityZone: "ap-northeast-1a"
+      CidrBlock: "10.0.0.0/24"
+      VpcId: !Ref VPCId
+      Tags: 
+        - Key: "Name"
+          Value: "cmn-pub-sn"
+        - Key: !Ref TagCreatebyKey
+          Value: !Ref TagCreatebyValue
+  CmnPublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties: 
+      VpcId: !Ref VPCId
+  CmnPublicRoute: 
+    Type: "AWS::EC2::Route"
+    Properties: 
+      RouteTableId: !Ref CmnPublicRouteTable
+      DestinationCidrBlock: "0.0.0.0/0"
+      GatewayId: !Ref IgwId 
+  CmnPublicRouteTableAssociation: 
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties: 
+      SubnetId: !Ref CmnPublicSubnet
+      RouteTableId: !Ref CmnPublicRouteTable

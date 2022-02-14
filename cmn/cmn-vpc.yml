@@ -1,4 +1,4 @@
-# スタック名：CmnVPCStack
+# スタック名：cmn-stack
 # 説明：共通環境 VPCテンプレート
 # URL:https://s3.ap-northeast-1.amazonaws.com/nanbara-cf-templete/cmn/cmn-vpc.yml
 AWSTemplateFormatVersion: "2010-09-09"
