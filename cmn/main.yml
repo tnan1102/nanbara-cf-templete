@@ -14,7 +14,6 @@ Mappings:
       CidrBlock: "10.0.0.0/16"
     CmnPubSNStack: 
       TempleteUrl: "https://s3.ap-northeast-1.amazonaws.com/nanbara-cf-templete/cmn/cmn-pub-sn.yml"
-      NameTag: 
       CidrBlock: "10.0.0.0/24"
       AvailabilityZone: "ap-northeast-1a"
     CmnLinuxSGStack: 
@@ -31,7 +30,7 @@ Resources:
         TagCreatebyKey: !FindInMap [DefaultTag, CreateBy, key]
         TagCreatebyValue: !FindInMap [DefaultTag, CreateBy, value]
   CmnPubSNStack:
-  　Type: AWS::CloudFormation::Stack
+    Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !FindInMap [ChildStackVar, CmnPubSNStack, TempleteUrl]
       Parameters: 
