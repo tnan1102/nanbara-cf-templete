@@ -6,8 +6,8 @@ Description: 共通パブリックサブネット作成テンプレート
 Parameters:
   VPCId:
     Type: String
-  #IgwId:
-  #  Type: String
+  IgwId:
+    Type: String
   SubnetCidrBlock:
     Type: String
   TagCreatebyKey:
