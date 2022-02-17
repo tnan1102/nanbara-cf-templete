@@ -41,3 +41,7 @@ Resources:
     Properties: 
       SubnetId: !Ref CmnPublicSubnet
       RouteTableId: !Ref CmnPublicRouteTable
+Outputs:
+  CmnPublicSubnetId:
+    Value: !Ref CmnPublicSubnet
+    Description: "CmnPublicSubnet id"

@@ -47,3 +47,16 @@ Resources:
         VPCCidrBlock: !GetAtt CmnVPCStack.Outputs.CmnVPCCidrBlock
         TagCreatebyKey: !FindInMap [DefaultTag, CreateBy, key]
         TagCreatebyValue: !FindInMap [DefaultTag, CreateBy, value]
+Outputs:
+  CmnVPCId:
+    Value: !GetAtt CmnVPCStack.Outputs.CmnVPCId
+    Description: "vpc id of cmn-vpc"
+  CmnVPCCidrBlock:
+    Value: !GetAtt CmnVPCStack.Outputs.CmnVPCCidrBlock
+    Description: "vpc cidr  block of cmn-vpc"
+  CmnPublicSubnetId:
+    Value: !GetAtt CmnPubSnStack.Outputs.CmnPublicSubnetId
+    Description: "subnet id of cmn-pub-sn"
+  CmnLinuxSGId:
+    Value: !GetAtt CmnLinuxSGStack.Outputs.CmnLinuxSGId
+    Description: "security group id of cmn-linux-sg"
